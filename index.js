@@ -1,27 +1,59 @@
-// clientSimulator.js
 const io = require('socket.io-client');
 
 const SERVER_URL = 'http://localhost:3000'; // Change this to your server URL
 const NUM_CLIENTS = 10; // Change this to the number of clients you want to simulate
+const SEND_INTERVAL = 2000; // Interval in milliseconds for sending data
 
 // Function to simulate a client connection
 function simulateClientConnection(clientId) {
-    const socket = io.connect(SERVER_URL);
+    let attemptCount = 0;
+    const socket = io.connect(SERVER_URL, {
+        reconnection: true, // Ensure reconnection attempts
+        reconnectionAttempts: 5, // Number of reconnection attempts
+        reconnectionDelay: 1000 // Delay between reconnection attempts
+    });
+
+    const logConnectingMessage = () => {
+        attemptCount++;
+        console.log(`Client ${clientId} connecting... Attempt ${attemptCount}`);
+    };
 
     socket.on('connect', () => {
+        attemptCount = 0; // Reset attempt count on successful connection
         console.log(`Client ${clientId} connected: ${socket.id}`);
 
         // Simulate sending data to the server
-        setInterval(() => {
+        const intervalId = setInterval(() => {
             const data = {
                 clientId: clientId,
-                message: `Hello from Client Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Suscipit tellus mauris a diam maecenas sed enim. Leo integer malesuada nunc vel. Pellentesque habitant morbi tristique senectus et netus et malesuada. At erat pellentesque adipiscing commodo elit. Placerat vestibulum lectus mauris ultrices eros. Nunc non blandit massa enim nec. Nisi lacus sed viverra tellus in hac. Quis ipsum suspendisse ultrices gravida dictum. Tempus iaculis urna id volutpat lacus laoreet non curabitur. Ultricies mi quis hendrerit dolor magna eget est lorem ipsum. Nulla facilisi morbi tempus iaculis urna id. Libero id faucibus nisl tincidunt. Euismod in pellentesque massa placerat duis ultricies. Pretium vulputate sapien nec sagittis aliquam malesuada. Posuere ac ut consequat semper viverra nam. Id nibh tortor id aliquet lectus. Eget nunc scelerisque viverra mauris in.`
+                message: `Hello from Client ${clientId}`
             };
             socket.emit('data', data);
-        }, 20); // Sending data every 2 seconds
+        }, SEND_INTERVAL); // Sending data every 2 seconds
 
-        // Simulate disconnection after some time
+        // Handle disconnection
+        socket.on('disconnect', (reason) => {
+            console.log(`Client ${clientId} disconnected: ${reason}`);
+            clearInterval(intervalId);
+        });
 
+        // Handle errors
+        socket.on('error', (error) => {
+            console.error(`Client ${clientId} error: ${error}`);
+        });
+    });
+
+    // Handle initial connection attempts
+    logConnectingMessage();
+
+    // Handle reconnection attempts
+    socket.on('reconnect_attempt', logConnectingMessage);
+
+    // Clean up on process termination
+    process.on('SIGINT', () => {
+        console.log(`Client ${clientId} terminating...`);
+        socket.disconnect();
+        process.exit();
     });
 }
 
