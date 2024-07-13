@@ -1,0 +1,44 @@
+=== Game Data Visualization ===
+
+--- Planets and Voxel Data ---
+
++--------------------------------------+-------------------+------------+
+| Planet UUID                          | Planet Name       | Voxel Data |
++--------------------------------------+-------------------+------------+
+| 696c465c-3d27-4b6d-bcb6-9b904d48e1b9 | Silver Planet     | OVERFLOW   |
+| fcb6cc8a-6e39-4436-9d5d-2beda31b7a52 | Silver Satellite  | OVERFLOW   |
+| 173819f5-d9a1-40e3-8e85-3f80e1aee27b | Golden Moon       | OVERFLOW   |
+| 1aaff205-f81c-4e81-9df8-ec46737f916f | Red Satellite     | OVERFLOW   |
+| 8b3d5bed-8dd6-4e6d-a7f6-f08ee1fa60ed | Blue Planet       | OVERFLOW   |
+| f2a7f166-8bfd-4ffe-84cf-a72ffe2d8498 | Golden Nebula     | OVERFLOW   |
+| 3bbd7df4-6480-4181-b1ab-f2c3155847f7 | Silver Planet     | OVERFLOW   |
+| 94f259ea-4461-4ea5-8a6d-7365a7903333 | Purple Satellite  | OVERFLOW   |
+| 302af2ab-d311-4699-af40-2ce7d80d8930 | Green Satellite   | OVERFLOW   |
+| 96a9a54f-e7c6-4e21-affa-1abe48b1a617 | Green Star        | OVERFLOW   |
+| 8b2a6c46-54d2-49b0-8b37-c545bc622d20 | Crystal Asteroid  | OVERFLOW   |
+| 2779d319-4de1-47f3-9d39-e68e4a581be3 | Golden Comet      | OVERFLOW   |
+| 4d741c51-80e3-49c8-b705-c66960968547 | Blue Asteroid     | OVERFLOW   |
+| e0c34756-b830-4c59-b6e4-2462f53e7158 | Purple Moon       | OVERFLOW   |
+| cbf86158-a093-4ee5-adeb-5a04680a32db | Blue Comet        | OVERFLOW   |
+| f6dcbe38-95e1-4448-89d9-0198fa5f5f65 | Silver Star       | OVERFLOW   |
+| 630811bd-fce0-4053-adc2-109581bdeab7 | Silver Satellite  | OVERFLOW   |
+| 3b67b19d-cac3-445b-8af2-fdc201f70fdc | Crystal Moon      | OVERFLOW   |
+| fdce3b29-1652-4b60-a7f3-ae47cba71f78 | Green Star        | OVERFLOW   |
+| 97034972-9b24-432c-aeed-d062956cafd1 | Purple Satellite  | OVERFLOW   |
+| 58834b98-5761-4a5a-87c1-41be73e49fbb | Yellow Moon       | OVERFLOW   |
+| 8b650990-372c-4260-9e10-d2a4a1f816c6 | Blue Moon         | OVERFLOW   |
+| 98bff6be-cf2c-4281-ba42-8753ae39b25b | Crystal Satellite | OVERFLOW   |
+| e2df1264-437d-4e1d-8d1d-98d13373f555 | Golden Planet     | OVERFLOW   |
+| f3ccfcc1-5c7d-4eb6-82ba-0f9d35ab52b2 | Yellow Satellite  | OVERFLOW   |
+| c59f28ff-55f1-4a42-a6c8-685e4a1bb653 | Purple Nebula     | OVERFLOW   |
+| a4721bc6-6dda-432f-9cf0-2db838819818 | Purple Galaxy     | OVERFLOW   |
+| dac59cd2-748e-435c-966a-557e460a2e71 | Green Galaxy      | OVERFLOW   |
+| 8a6a6a17-0a93-40ae-ae35-b9c6bd9df3cd | Blue Moon         | OVERFLOW   |
+| 78c0592f-e957-44f0-8206-e4d0ebd3437e | Green Satellite   | OVERFLOW   |
++--------------------------------------+-------------------+------------+
+--- Players and Inventory ---
+
++-------------+-------------+-----------+---------------+
+| Player UUID | Player Name | Item Name | Item Quantity |
++-------------+-------------+-----------+---------------+
++-------------+-------------+-----------+---------------+
