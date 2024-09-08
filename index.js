@@ -1,16 +1,33 @@
 const io = require('socket.io-client');
 
 const SERVER_URL = 'http://localhost:3000'; // Change this to your server URL
-const NUM_CLIENTS = 10; // Change this to the number of clients you want to simulate
+const NUM_CLIENTS = 1; // Change this to the number of clients you want to simulate
 const SEND_INTERVAL = 2000; // Interval in milliseconds for sending data
+
+// Function to generate custom message and body
+function generateCustomMessage(clientId) {
+    return {
+        eventName: 'whisper', // You can change this to any event name you want
+        body: {
+            clientId: clientId,
+            timestamp: Date.now(),
+            message: `Custom message from Client ${clientId}`,
+            data: {
+                value: Math.random(),
+                isActive: true,
+                tags: ['test', 'custom', `client${clientId}`]
+            }
+        }
+    };
+}
 
 // Function to simulate a client connection
 function simulateClientConnection(clientId) {
     let attemptCount = 0;
     const socket = io.connect(SERVER_URL, {
-        reconnection: true, // Ensure reconnection attempts
-        reconnectionAttempts: 5, // Number of reconnection attempts
-        reconnectionDelay: 1000 // Delay between reconnection attempts
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000
     });
 
     const logConnectingMessage = () => {
@@ -19,37 +36,29 @@ function simulateClientConnection(clientId) {
     };
 
     socket.on('connect', () => {
-        attemptCount = 0; // Reset attempt count on successful connection
+        attemptCount = 0;
         console.log(`Client ${clientId} connected: ${socket.id}`);
 
-        // Simulate sending data to the server
+        // Simulate sending custom data to the server
         const intervalId = setInterval(() => {
-            const data = {
-                clientId: clientId,
-                message: `Hello from Client ${clientId}`
-            };
-            socket.emit('data', data);
-        }, SEND_INTERVAL); // Sending data every 2 seconds
+            const customMessage = generateCustomMessage(clientId);
+            socket.emit(customMessage.eventName, customMessage.body);
+            console.log(`Client ${clientId} sent: ${JSON.stringify(customMessage)}`);
+        }, SEND_INTERVAL);
 
-        // Handle disconnection
         socket.on('disconnect', (reason) => {
             console.log(`Client ${clientId} disconnected: ${reason}`);
             clearInterval(intervalId);
         });
 
-        // Handle errors
         socket.on('error', (error) => {
             console.error(`Client ${clientId} error: ${error}`);
         });
     });
 
-    // Handle initial connection attempts
     logConnectingMessage();
-
-    // Handle reconnection attempts
     socket.on('reconnect_attempt', logConnectingMessage);
 
-    // Clean up on process termination
     process.on('SIGINT', () => {
         console.log(`Client ${clientId} terminating...`);
         socket.disconnect();
