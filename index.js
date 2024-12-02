@@ -1,8 +1,8 @@
 const io = require('socket.io-client');
 
 const SERVER_URL = 'http://localhost:3000'; // Change this to your server URL
-const NUM_CLIENTS = 1; // Change this to the number of clients you want to simulate
-const SEND_INTERVAL = 2000; // Interval in milliseconds for sending data
+const NUM_CLIENTS = 1000; // Change this to the number of clients you want to simulate
+const SEND_INTERVAL = 0; // Interval in milliseconds for sending data
 
 // Function to generate custom message and body
 function generateCustomMessage(clientId) {
