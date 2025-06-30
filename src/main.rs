@@ -150,6 +150,8 @@ impl TestStats {
         info!("Message success rate: {:.2}%", if sent > 0 { (received as f64 / sent as f64) * 100.0 } else { 0.0 });
         info!("Messages/sec sent: {:.2}", if uptime.as_secs() > 0 { sent as f64 / uptime.as_secs_f64() } else { 0.0 });
         info!("Messages/sec received: {:.2}", if uptime.as_secs() > 0 { received as f64 / uptime.as_secs_f64() } else { 0.0 });
+        info!("Messages/min sent: {:.2}", if uptime.as_secs() > 0 { sent as f64 / (uptime.as_secs_f64() / 60.0) } else { 0.0 });
+        info!("Messages/min received: {:.2}", if uptime.as_secs() > 0 { received as f64 / (uptime.as_secs_f64() / 60.0) } else { 0.0 });
         info!("Average latency: {} ms", avg_latency);
         info!("Min latency: {} ms", min_display);
         info!("Max latency: {} ms", max_latency);
@@ -231,7 +233,9 @@ impl LoadTester {
         info!("Starting endless WebSocket load test...");
         info!("Target URL: {}", self.url);
         info!("Number of connections: {}", self.num_connections);
-        info!("Message interval: {} ms", self.message_interval_ms);
+        info!("Message interval: {} ms (targeting 1500 messages/min per connection)", self.message_interval_ms);
+        info!("Expected total message rate: {:.0} messages/min", 
+              self.num_connections as f64 * (60000.0 / self.message_interval_ms as f64));
         info!("Press Ctrl+C to stop and see final statistics");
 
         // Setup signal handler for graceful shutdown
@@ -687,8 +691,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
                         .short('i')
                         .long("interval")
                         .value_name("MS")
-                        .help("Interval between messages in milliseconds")
-                        .default_value("1000"),
+                        .help("Interval between messages in milliseconds (40ms = 1500 msgs/min)")
+                        .default_value("40"),
                 )
                 .arg(
                     Arg::new("connection-timeout")
