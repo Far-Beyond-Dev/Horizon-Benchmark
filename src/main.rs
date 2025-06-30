@@ -259,6 +259,7 @@ impl LoadTester {
             let url = self.url.clone();
             let stats = Arc::clone(&self.stats);
             let shutdown_signal = Arc::clone(&self.shutdown_signal);
+            let shutdown_signal_break = Arc::clone(&self.shutdown_signal);
             let message_interval_ms = self.message_interval_ms;
             let connection_timeout_ms = self.connection_timeout_ms;
             let message_timeout_ms = self.message_timeout_ms;
@@ -282,9 +283,13 @@ impl LoadTester {
             // Stagger connection attempts
             if i % 50 == 0 && i > 0 {
                 info!("Created {} connections so far...", i);
-                sleep(Duration::from_millis(100)).await;
+                sleep(Duration::from_millis(2)).await;
             } else {
                 sleep(Duration::from_millis(20)).await;
+            }
+
+            if shutdown_signal_break.load(Ordering::Relaxed) {
+                break;
             }
         }
 
